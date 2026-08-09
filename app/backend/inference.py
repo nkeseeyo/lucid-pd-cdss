@@ -151,17 +151,30 @@ def _shap_evidence(pipeline, features: list[str],
     return bars, phrases
 
 
+#: Decimal places the probability carries in the response. The gauge renders whatever it
+#: is given, so any percentage quoted in prose must be derived from the same rounded
+#: value, not from the raw score behind it.
+_REPORTED_DP = 3
+
+
+def _reported(probability: float) -> float:
+    """The probability as the interface receives it."""
+    return round(probability, _REPORTED_DP)
+
+
 def _display_pct(probability: float) -> int:
     """Render a probability as the whole percentage the interface shows.
 
     This must agree with the gauge in ``app/frontend/src/components/Gauge.tsx``, which
     reads the same probability and would otherwise print a different number beside this
-    sentence. Two rules are shared. Halves round up, because Python's ``round`` rounds
-    them to even and JavaScript's ``Math.round`` does not, so 0.005 would print as 0% here
-    and 1% on the gauge. And the result is held inside 1-99, because a screening estimate
-    should never assert absolute certainty.
+    sentence. Three rules are shared. The input is the rounded value the response carries,
+    since 0.8149 and the 0.815 the gauge receives fall either side of a whole percent.
+    Halves round up, because Python's ``round`` rounds them to even and JavaScript's
+    ``Math.round`` does not, so 0.005 would print as 0% here and 1% on the gauge. And the
+    result is held inside 1-99, because a screening estimate should never assert absolute
+    certainty.
     """
-    return min(99, max(1, int(100 * probability + 0.5)))
+    return min(99, max(1, int(100 * _reported(probability) + 0.5)))
 
 
 def _as_recommendation(probability: float) -> Recommendation:
@@ -186,7 +199,7 @@ def predict_voice(audio_path: str | Path) -> CombinedResult:
     text = explanation(prediction, band, phrases[:3])
 
     return CombinedResult(
-        modality="voice", probability=round(probability, 3), risk_band=band,
+        modality="voice", probability=_reported(probability), risk_band=band,
         explanation=Explanation(features=bars, plain_text=text, method="SHAP"),
         recommendation=_as_recommendation(probability),
         caveat="Screening estimate from the deployed voice model; decision support only.",
@@ -284,7 +297,7 @@ def predict_mri(image_path: str | Path) -> CombinedResult:
             "the accuracy of this baseline was traced to acquisition protocol rather than "
             "pathology. It is not a validated detector and must not guide care.")
     return CombinedResult(
-        modality="mri", probability=round(probability, 3), risk_band=_band(probability),
+        modality="mri", probability=_reported(probability), risk_band=_band(probability),
         explanation=Explanation(features=[], plain_text=text, method="Grad-CAM"),
         recommendation=_as_recommendation(probability),
         caveat="Leakage-inflated research baseline (RQ4): not a validated detector, not clinical.",
@@ -296,7 +309,7 @@ def predict_combined(audio_path: str | Path, image_path: str | Path) -> Combined
     """Illustrative decision-level combination of the voice and MRI estimates."""
     voice = predict_voice(audio_path)
     mri = predict_mri(image_path)
-    probability = round((voice.probability + mri.probability) / 2, 3)
+    probability = _reported((voice.probability + mri.probability) / 2)
     text = ("Illustrative decision-level combination of the voice and MRI estimates. The two "
             "inputs are not from the same person and are not paired, so this is not a true "
             "multimodal diagnosis; the MRI component is a leakage-inflated research baseline.")
