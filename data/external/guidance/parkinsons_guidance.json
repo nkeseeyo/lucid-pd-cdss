@@ -1,0 +1,45 @@
+{
+  "_about": "Tiny curated guidance corpus for single-pass RAG grounding of the LUCID-PD explanation layer (RQ3). Snippets paraphrase public NICE NG71 and NHS guidance plus general clinical statements. Sources are indicative; verify exact wording against the cited document before any non-research use.",
+  "snippets": [
+    {
+      "id": "diagnosis-clinical",
+      "source": "NICE NG71",
+      "text": "Parkinson's disease is diagnosed clinically, from a person's symptoms, examination and history. There is no single laboratory or imaging test that confirms it on its own."
+    },
+    {
+      "id": "refer-untreated",
+      "source": "NICE NG71",
+      "text": "If Parkinson's disease is suspected, refer the person, untreated, to a specialist with expertise in the differential diagnosis of the condition rather than starting treatment first."
+    },
+    {
+      "id": "refer-timeframe",
+      "source": "NICE NG71",
+      "text": "People with suspected Parkinson's disease should be seen by a specialist quickly, within a few weeks of referral, so that diagnosis and management can begin without undue delay."
+    },
+    {
+      "id": "early-features",
+      "source": "NHS",
+      "text": "Common early features of Parkinson's include tremor, slowness of movement and muscle stiffness. Changes in speech, handwriting and facial expression can also occur."
+    },
+    {
+      "id": "voice-changes",
+      "source": "Clinical literature",
+      "text": "Parkinsonian speech can show reduced loudness, a monotone or breathy voice quality, imprecise articulation and altered timing. These voice changes are the signal that voice-based screening measures."
+    },
+    {
+      "id": "progressive-condition",
+      "source": "NICE NG71",
+      "text": "Parkinson's disease is a long-term progressive neurological condition. Care is multidisciplinary and tailored to the individual over time."
+    },
+    {
+      "id": "decision-support-only",
+      "source": "General",
+      "text": "A screening or decision-support tool can highlight people who may benefit from specialist assessment. It does not make a diagnosis and does not replace a clinician's judgement."
+    },
+    {
+      "id": "risk-not-diagnosis",
+      "source": "General",
+      "text": "A risk estimate indicates the strength of evidence for further assessment, not a confirmed diagnosis. A higher estimate means specialist review is more strongly indicated; it is not proof that the disease is present."
+    }
+  ]
+}

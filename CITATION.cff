@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+title: >-
+  LUCID-PD: a leakage-controlled clinical decision support prototype for
+  Parkinson's disease
+message: If you use this software or its findings, please cite it as below.
+type: software
+authors:
+  - family-names: Eyo
+    given-names: Nkese
+    affiliation: Coventry University
+repository-code: https://github.com/nkeseeyo/lucid-pd-cdss
+abstract: >-
+  A clinical decision support prototype for Parkinson's disease that treats
+  validation protocol as the object of study. It detects Parkinson's from
+  sustained-vowel speech under subject-level cross-validation, explains each
+  decision with SHAP attribution and retrieval-grounded text, routes the result
+  through auditable rules, and reproduces the widely reported MRI convolutional
+  baseline to quantify how much of its accuracy is an artefact of splitting
+  images rather than scans.
+keywords:
+  - Parkinson's disease
+  - clinical decision support
+  - data leakage
+  - subject-level validation
+  - explainable artificial intelligence
+  - speech processing
+license: MIT
+version: 0.1.0

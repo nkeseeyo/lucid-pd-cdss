@@ -1,0 +1,31 @@
+# Core stack — speech pipeline, explainability, plotting (laptop, no GPU).
+# For the editable package + extras, prefer:  pip install -e ".[audio,llm,app,dev]"
+numpy>=1.26
+pandas>=2.2
+scipy>=1.13
+scikit-learn>=1.5
+imbalanced-learn>=0.12
+xgboost>=2.0
+lightgbm>=4.3
+shap>=0.45
+matplotlib>=3.8
+seaborn>=0.13
+joblib>=1.4
+tqdm>=4.66
+
+# --- API (the deployable backend; React frontend is built separately under app/) ---
+fastapi>=0.111
+uvicorn[standard]>=0.30
+pydantic>=2.7
+python-multipart>=0.0.9
+
+# --- dev / notebooks ---
+pytest>=8.2
+jupyter>=1.0
+ipykernel>=6.29
+
+# Heavy / optional groups installed on demand (see pyproject extras):
+#   audio: praat-parselmouth librosa soundfile opensmile   (raw-audio features)
+#   mri:   torch torchvision grad-cam pillow opencv-python  (CNN critique baseline — trains locally on RTX 5060 Ti; cu128 wheels)
+#   slm:   ollama sentence-transformers faiss-cpu           (Gemma 3n + RAG explanation layer)
+#   data:  kagglehub                                        (MRI critique-baseline dataset)

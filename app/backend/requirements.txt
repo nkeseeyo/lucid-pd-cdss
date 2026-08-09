@@ -1,0 +1,8 @@
+# Backend-only runtime deps (the API does not need the full research stack).
+fastapi>=0.111
+uvicorn[standard]>=0.30
+pydantic>=2.7
+python-multipart>=0.0.9   # file uploads (audio / MRI image)
+joblib>=1.4
+numpy>=1.26
+scikit-learn>=1.5

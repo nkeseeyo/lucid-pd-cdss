@@ -1,0 +1,76 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+.python-version
+
+# --- secrets / credentials ---
+.env
+.kaggle/
+kaggle.json
+*.key
+
+# --- data (re-downloadable; keep folders via .gitkeep) ---
+/data/raw/*
+/data/processed/*
+/data/external/*
+!**/.gitkeep
+# The guidance corpus is hand-curated rather than downloaded, and it is the grounding
+# source the explanation layer and the deployment both require.
+!/data/external/guidance/
+
+# --- trained models & heavy outputs ---
+/models/*
+!models/.gitkeep
+# The deployed voice model is the artefact the application serves, and it is small enough
+# to carry. The 90 MB MRI checkpoint stays out and reaches the Space through the deploy
+# script instead.
+!models/deployed_voice.joblib
+/results/figures/*
+!results/figures/.gitkeep
+
+# --- LaTeX build artefacts (keep .tex/.bib/.pdf) ---
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.bcf
+*.run.xml
+*.fls
+*.fdb_latexmk
+*.blg
+*.bbl
+*.synctex.gz
+
+# --- frontend (React/Vite) ---
+app/frontend/node_modules/
+app/frontend/dist/
+app/frontend/.env
+app/frontend/_design_reference/
+*.tsbuildinfo
+
+# --- browser-test / screenshot artifacts ---
+/.playwright-mcp/
+/*.png
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- deployment staging (rebuilt by scripts/deploy_space.py) ---
+/build/
+
+# --- local only: dissertation, coursework paperwork, planning documents ---
+# These stay on disk and are deliberately kept out of the published repository.
+/doc/
+/RESEARCH.md
+/EXPERIMENT_DESIGN.md
+/scripts/fill_proforma.py
+/scripts/make_gantt.py

@@ -1,0 +1,17 @@
+# Conda environment for the Parkinson's CDSS project.
+# Recreate:  conda env create -f environment.yml
+# Update:    conda env update -f environment.yml --prune
+name: parkinsons_cdss
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - pip:
+      # installs the package (src/pdcdss) + core + app + dev extras in one go
+      - -e ".[app,dev]"
+      # install per strand, these are heavy:
+      #   pip install -e ".[audio]"   # openSMILE and raw-audio feature extraction
+      #   pip install -e ".[slm]"     # local explanation backend (also install Ollama)
+      #   pip install -e ".[mri]"     # CNN critique baseline; needs a CUDA-matched torch build
+      #   pip install -e ".[data]"    # kagglehub, for the imaging dataset download

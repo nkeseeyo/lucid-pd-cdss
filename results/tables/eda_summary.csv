@@ -1,0 +1,13 @@
+metric,value
+rows,756.0
+subjects,252.0
+features,753.0
+recs_per_subject,3.0
+rec_PD,564.0
+rec_HC,192.0
+subj_PD,188.0
+subj_HC,64.0
+missing,0.0
+constant_cols,0.0
+duplicate_cols,0.0
+high_corr_pairs_pct,0.4

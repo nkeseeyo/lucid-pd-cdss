@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pdcdss"
+version = "0.1.0"
+description = "Web-based Clinical Decision Support System for Parkinson's Disease detection and care-route recommendation"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Nkese Eyo" }]
+
+# core: speech pipeline + explainability + API (laptop, no GPU)
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "scipy>=1.13",
+    "scikit-learn>=1.5",
+    "imbalanced-learn>=0.12",
+    "xgboost>=2.0",
+    "lightgbm>=4.3",
+    "shap>=0.45",
+    "matplotlib>=3.8",
+    "seaborn>=0.13",
+    "joblib>=1.4",
+    "tqdm>=4.66",
+]
+
+[project.optional-dependencies]
+audio = ["praat-parselmouth>=0.4", "librosa>=0.10", "soundfile>=0.12", "opensmile>=2.5"]
+# MRI CNN baseline. Recent CUDA architectures need a matching torch build, e.g.
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+mri   = ["torch>=2.7", "torchvision>=0.22", "grad-cam>=1.5", "pillow>=10.3", "opencv-python>=4.9", "tqdm>=4.66"]
+# Local explanation backend: a small language model served by Ollama, with retrieval over
+# the curated NICE/NHS corpus. The deployment uses Hugging Face Inference Providers instead.
+slm   = ["ollama>=0.3", "sentence-transformers>=3.0", "faiss-cpu>=1.8"]
+data  = ["kagglehub>=0.3"]
+app   = ["fastapi>=0.111", "uvicorn[standard]>=0.30", "pydantic>=2.7", "python-multipart>=0.0.9"]
+dev   = ["pytest>=8.2", "ruff>=0.5", "jupyter>=1.0", "ipykernel>=6.29"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100

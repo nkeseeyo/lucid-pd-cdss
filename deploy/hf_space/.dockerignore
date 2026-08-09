@@ -1,0 +1,6 @@
+# Anything the image builds for itself. Keeping these out of the build context makes a
+# local `docker build` behave like the Space build, which never receives them.
+frontend/node_modules/
+frontend/dist/
+**/__pycache__/
+**/*.pyc

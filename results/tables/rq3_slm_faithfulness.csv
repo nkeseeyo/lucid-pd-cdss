@@ -1,0 +1,7 @@
+model,condition,faithfulness,unsupported,fk_grade,consistency,latency_s,n
+gemma4:e4b,grounded,0.989,0.111,16.722,0.699,10.582,9
+gemma4:e4b,ungrounded,0.524,3.444,16.394,0.518,8.212,9
+phi4-mini,grounded,0.831,1.333,20.253,0.417,5.558,9
+phi4-mini,ungrounded,0.729,1.444,16.113,0.431,5.071,9
+qwen3:4b,grounded,1.0,0.0,10.854,0.496,10.879,9
+qwen3:4b,ungrounded,0.702,1.778,12.186,0.406,6.559,9

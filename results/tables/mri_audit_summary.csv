@@ -1,0 +1,9 @@
+metric,value
+images,3284.0
+unique_by_hash,3268.0
+duplicate_files,32.0
+PD,2083.0
+NonPD,1201.0
+distinct_sequences,43.0
+sequences_shared_across_classes,6.0
+pct_sequences_class_exclusive,86.0

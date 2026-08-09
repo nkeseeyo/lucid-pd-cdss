@@ -1,0 +1,25 @@
+# Runtime dependencies for the hosted Space. Torch and torchvision are installed
+# separately from the CPU wheel index (see the Dockerfile) and are not listed here.
+#
+# scikit-learn and xgboost are pinned to the versions that produced
+# models/deployed_voice.joblib, so the serialised pipeline is restored exactly rather
+# than through a version-shifted unpickling path.
+
+fastapi>=0.115
+uvicorn[standard]>=0.30
+pydantic>=2.7
+python-multipart>=0.0.9
+
+numpy>=1.26
+pandas>=2.2
+scipy>=1.13
+scikit-learn==1.9.0
+xgboost==3.2.0
+shap>=0.45
+joblib>=1.4
+
+opensmile>=2.5
+soundfile>=0.12
+
+matplotlib>=3.8
+pillow>=10.3

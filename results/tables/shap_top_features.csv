@@ -1,0 +1,16 @@
+feature,family,mean_abs_shap,folds_in_top15
+std_delta_delta_log_energy,MFCC / cepstral,0.53973,5
+tqwt_entropy_log_dec_27,TQWT (tunable-Q wavelet),0.29183,4
+std_7th_delta_delta,MFCC / cepstral,0.2896,3
+tqwt_entropy_log_dec_33,TQWT (tunable-Q wavelet),0.26446,4
+std_6th_delta_delta,MFCC / cepstral,0.24769,5
+mean_MFCC_1st_coef,MFCC / cepstral,0.24663,4
+std_8th_delta_delta,MFCC / cepstral,0.22206,1
+tqwt_meanValue_dec_5,TQWT (tunable-Q wavelet),0.20059,3
+mean_MFCC_6th_coef,MFCC / cepstral,0.19306,2
+tqwt_energy_dec_7,TQWT (tunable-Q wavelet),0.15396,3
+tqwt_entropy_log_dec_1,TQWT (tunable-Q wavelet),0.15363,3
+std_7th_delta,MFCC / cepstral,0.14234,1
+std_6th_delta,MFCC / cepstral,0.14165,1
+tqwt_skewnessValue_dec_12,TQWT (tunable-Q wavelet),0.13613,2
+tqwt_energy_dec_6,TQWT (tunable-Q wavelet),0.13187,0

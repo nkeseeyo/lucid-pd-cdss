@@ -1,0 +1,60 @@
+/* LUCID-PD CDSS — shared global rules. Dynamic per-screen styling lives inline
+   in components, matching the design reference exactly. */
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+::selection {
+  background: #bfe0db;
+}
+
+@keyframes nvpulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes nvspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes nvbar {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+@keyframes nvfade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+[data-nv-focusring]:focus-visible {
+  outline: 3px solid #1f8f8a;
+  outline-offset: 2px;
+}
+
+/* Section entrance — applied to each screen wrapper. */
+.nv-screen {
+  animation: nvfade 0.32s ease both;
+}
