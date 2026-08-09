@@ -151,6 +151,19 @@ def _shap_evidence(pipeline, features: list[str],
     return bars, phrases
 
 
+def _display_pct(probability: float) -> int:
+    """Render a probability as the whole percentage the interface shows.
+
+    This must agree with the gauge in ``app/frontend/src/components/Gauge.tsx``, which
+    reads the same probability and would otherwise print a different number beside this
+    sentence. Two rules are shared. Halves round up, because Python's ``round`` rounds
+    them to even and JavaScript's ``Math.round`` does not, so 0.005 would print as 0% here
+    and 1% on the gauge. And the result is held inside 1-99, because a screening estimate
+    should never assert absolute certainty.
+    """
+    return min(99, max(1, int(100 * probability + 0.5)))
+
+
 def _as_recommendation(probability: float) -> Recommendation:
     rule = recommend(probability)
     return Recommendation(band=rule.band, route=rule.route,
@@ -168,7 +181,8 @@ def predict_voice(audio_path: str | Path) -> CombinedResult:
     band = _band(probability)
 
     bars, phrases = _shap_evidence(pipeline, features, pipeline["scaler"].transform(x))
-    prediction = f"Estimated probability of Parkinson's disease: {round(100 * probability)}%"
+    prediction = (f"Estimated probability of Parkinson's disease: "
+                  f"{_display_pct(probability)}%")
     text = explanation(prediction, band, phrases[:3])
 
     return CombinedResult(

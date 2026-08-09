@@ -24,7 +24,9 @@ function arcPath(p0: number, p1: number): string {
 export default function Gauge({ probability, band }: Props) {
   const p = probability;
   // a screening estimate should never assert absolute certainty: clamp the displayed
-  // percentage to 1-99 so the gauge never reads 0% or 100%
+  // percentage to 1-99 so the gauge never reads 0% or 100%.
+  // `_display_pct` in app/backend/inference.py applies this same rule to the percentage
+  // quoted in the plain-language summary; change one and the two numbers disagree on screen.
   const pct = Math.min(99, Math.max(1, Math.round(p * 100)));
   const color = bandColor(band);
   const a = Math.PI * (1 - p);

@@ -93,7 +93,7 @@ export default function About({ onHome }: Props) {
         {card(
           "#0A6E5C",
           "Voice — primary mode",
-          "Acoustic features (jitter, shimmer, harmonic-to-noise ratio, tremor) are extracted from a sustained vowel and scored by a trained classifier. SHAP attributes the result to individual features so the reasoning is inspectable.",
+          "openSMILE converts a sustained vowel into the 88 eGeMAPS acoustic parameters, covering pitch, loudness, speech timing, articulation and spectral shape, and voice quality measures such as jitter, shimmer and harmonics-to-noise. A gradient boosted classifier scores them, and SHAP groups its attribution into those families so the reasoning is inspectable.",
         )}
         {card(
           "#6A4F8C",
