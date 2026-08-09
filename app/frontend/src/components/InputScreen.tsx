@@ -51,7 +51,7 @@ export default function InputScreen({
   const audioInputRef = useRef<HTMLInputElement | null>(null);
   const mriInputRef = useRef<HTMLInputElement | null>(null);
 
-  // imperative recorder handles (not state — they don't drive render)
+  // imperative recorder handles (not state, they don't drive render)
   const streamRef = useRef<MediaStream | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
@@ -267,7 +267,7 @@ export default function InputScreen({
   const showModeCaveat = mode !== "voice";
   const modeCaveatText =
     mode === "mri"
-      ? "Research baseline. MRI results are exploratory and must not guide care on their own — interpret with caution."
+      ? "Research baseline. MRI results are exploratory and must not guide care on their own, so interpret with caution."
       : "Illustrative only. Voice and MRI come from different sources, so this is not a true fused prediction.";
   const caveatCol =
     mode === "mri"

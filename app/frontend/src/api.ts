@@ -11,7 +11,7 @@ const API: string =
 
 /**
  * POST the captured input(s) to the FastAPI backend and return the structured
- * result. Throws on any non-OK response or network failure — the caller routes
+ * result. Throws on any non-OK response or network failure, and the caller routes
  * to the error screen (no silent mock fallback).
  */
 export async function predict(

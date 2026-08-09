@@ -31,7 +31,7 @@ export default function TopBanner() {
         <circle cx="12" cy="7.6" r="1.2" fill="#0B4B4D" />
       </svg>
       <span>
-        Decision-support &amp; research tool — <strong>not a diagnosis</strong>, not a
+        Decision support and research tool. <strong>Not a diagnosis</strong>, not a
         medical device. Always apply clinical judgement.
       </span>
     </div>

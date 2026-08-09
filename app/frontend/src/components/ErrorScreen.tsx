@@ -46,7 +46,7 @@ export default function ErrorScreen({ onRetry, onBack }: Props) {
           maxWidth: "38ch",
         }}
       >
-        The prediction service didn&rsquo;t respond. Your input is still here — please
+        The prediction service didn&rsquo;t respond. Your input is still here, so you can
         try again.
       </p>
       <div style={{ display: "flex", gap: 12 }}>

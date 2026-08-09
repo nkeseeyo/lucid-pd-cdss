@@ -6,7 +6,7 @@ interface Props {
   band: RiskBand;
 }
 
-/** Arc geometry — ported from the design's `arcPath` / marker math. */
+/** Arc geometry, ported from the design's `arcPath` / marker math. */
 const CX = 140;
 const CY = 140;
 const R = 104;

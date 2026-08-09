@@ -85,19 +85,19 @@ export default function About({ onHome }: Props) {
       >
         LUCID-PD CDSS estimates the likelihood of speech and imaging patterns associated
         with Parkinson&rsquo;s disease. It is a{" "}
-        <strong>decision-support and research tool</strong> for clinicians — not a
+        <strong>decision-support and research tool</strong> for clinicians. It is not a
         diagnosis, and not a medical device.
       </p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         {card(
           "#0A6E5C",
-          "Voice — primary mode",
+          "Voice: primary mode",
           "openSMILE converts a sustained vowel into the 88 eGeMAPS acoustic parameters, covering pitch, loudness, speech timing, articulation and spectral shape, and voice quality measures such as jitter, shimmer and harmonics-to-noise. A gradient boosted classifier scores them, and SHAP groups its attribution into those families so the reasoning is inspectable.",
         )}
         {card(
           "#6A4F8C",
-          "MRI — research baseline",
+          "MRI: research baseline",
           <>
             A convolutional model produces a Grad-CAM heatmap over the scan. This pathway
             is <strong>exploratory</strong>: it is not validated for clinical use and must
@@ -106,7 +106,7 @@ export default function About({ onHome }: Props) {
         )}
         {card(
           "#8A6A2A",
-          "Combined — illustrative only",
+          "Combined: illustrative only",
           "Voice and MRI inputs come from different sources and are not jointly modelled, so combined output is illustrative and should be read as such.",
         )}
 
@@ -130,7 +130,7 @@ export default function About({ onHome }: Props) {
               color: "#234240",
             }}
           >
-            <li>A clinician stays in the loop — output informs, never decides.</li>
+            <li>A clinician stays in the loop. The output informs, it never decides.</li>
             <li>
               Inputs are processed for the prediction only and kept to this local session;
               no account, no upload to third parties in this build.

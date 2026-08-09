@@ -1,4 +1,4 @@
-/* LUCID-PD CDSS — shared global rules. Dynamic per-screen styling lives inline
+/* LUCID-PD CDSS shared global rules. Dynamic per-screen styling lives inline
    in components, matching the design reference exactly. */
 
 * {
@@ -54,7 +54,7 @@ body {
   outline-offset: 2px;
 }
 
-/* Section entrance — applied to each screen wrapper. */
+/* Section entrance, applied to each screen wrapper. */
 .nv-screen {
   animation: nvfade 0.32s ease both;
 }

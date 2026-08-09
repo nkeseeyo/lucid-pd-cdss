@@ -573,9 +573,9 @@ export default function Results({
           maxWidth: "60ch",
         }}
       >
-        This estimate supports — and does not replace — clinical judgement and a full
-        assessment. LUCID-PD CDSS is not a medical device and must not be the sole basis
-        for any care decision.
+        This estimate supports clinical judgement and a full assessment, and does not
+        replace them. LUCID-PD CDSS is not a medical device and must not be the sole
+        basis for any care decision.
       </p>
     </section>
   );

@@ -151,8 +151,8 @@ export default function Home({ onStart, onAbout, onVoice, onMri, onCombined }: P
               maxWidth: "38ch",
             }}
           >
-            Record a short sustained vowel and get an explainable risk estimate with a
-            suggested care route — built for clarity under time pressure.
+            Record a short sustained vowel to get a risk estimate, the evidence behind
+            it, and a suggested care route.
           </p>
           <div
             style={{ display: "flex", flexWrap: "wrap", gap: 12, alignItems: "center" }}
@@ -426,7 +426,7 @@ export default function Home({ onStart, onAbout, onVoice, onMri, onCombined }: P
           </div>
           <h3 style={{ fontSize: 19, fontWeight: 700, margin: "0 0 6px" }}>MRI</h3>
           <p style={cardP}>
-            Upload a brain MRI. Grad-CAM highlights regions —{" "}
+            Upload a brain MRI. Grad-CAM highlights regions, so{" "}
             <strong style={{ color: "#6A4F8C" }}>interpret with caution</strong>.
           </p>
           <button

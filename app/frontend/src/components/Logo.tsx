@@ -1,4 +1,4 @@
-/** The LUCID-PD logo mark — "lens + pulse": a teal rounded square with a clear
+/** The LUCID-PD logo mark, a lens crossed with a pulse: a teal rounded square with a clear
  *  lens (lucidity) crossed by a clinical pulse line. `size` controls the box. */
 export default function Logo({ size = 30 }: { size?: number }) {
   return (
