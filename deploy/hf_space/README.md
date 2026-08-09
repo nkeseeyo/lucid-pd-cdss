@@ -6,7 +6,7 @@ colorTo: purple
 sdk: docker
 app_port: 7860
 pinned: false
-short_description: Voice-based Parkinson's decision support with SHAP evidence and a grounded explanation
+short_description: Voice-based Parkinson's decision support with SHAP evidence
 ---
 
 # LUCID-PD: a clinical decision support demonstrator for Parkinson's disease
