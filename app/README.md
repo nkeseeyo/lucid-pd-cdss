@@ -1,4 +1,4 @@
-# app/ — LUCID-PD web application
+# The LUCID-PD web application
 
 The deployable CDSS, separate from the research code (`src/pdcdss`). The app loads the
 trained artefacts in `models/` and serves them through a FastAPI backend and a React UI.
@@ -9,7 +9,7 @@ app/
 │   ├── main.py       routes: /health, /predict/voice, /predict/mri, /predict/combined
 │   ├── schemas.py    Pydantic response models
 │   └── inference.py  loads models/, extracts features, runs SHAP + Grad-CAM + the SLM
-└── frontend/         React (Vite + TypeScript) UI — the three-mode interface
+└── frontend/         React (Vite + TypeScript) UI, the three-mode interface
 ```
 
 ## What each mode does
@@ -38,9 +38,9 @@ Every screen carries a "decision support only, not a diagnosis, not a medical de
 
 ## Run the demo
 ```bash
-# 1. backend — from the repo root, with src on the path
+# 1. backend, from the repo root, with src on the path
 PYTHONPATH=src conda run -n parkinsons_cdss uvicorn app.backend.main:app --port 8000
-# 2. frontend — separate terminal
+# 2. frontend, in a separate terminal
 cd app/frontend && npm install && npm run dev
 ```
 Open the localhost URL Vite prints (e.g. http://localhost:5173), choose a mode, add an input
