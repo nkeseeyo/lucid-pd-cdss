@@ -223,6 +223,35 @@ def _gradcam_overlay(image, cam) -> str:
     return "data:image/png;base64," + base64.b64encode(buffer.getvalue()).decode()
 
 
+def _gradcam_evidence(image, cam) -> tuple[int, str]:
+    """Measure where the attention on *this* slice actually falls.
+
+    The point of this mode is that the network keys on acquisition artefacts rather than
+    anatomy. Stating that in fixed prose would say the same thing whatever was uploaded,
+    so it is measured per image instead. The background of an MRI slice is near black, so
+    a low fraction of the slice's own maximum intensity separates head from background
+    without assuming any particular scanner or window.
+
+    The attention lying off the head is measured as a share of total heat rather than by
+    thresholding the map. A threshold misreports concentrated maps, because most of a
+    peaked Grad-CAM is zero and any percentile cut then selects the whole slice.
+
+    Returns that percentage, and a plain description of where the hottest point sits.
+    """
+    grey = np.asarray(image.convert("L"), dtype=float)
+    heat = np.asarray(cam, dtype=float)
+    if grey.size == 0 or grey.max() <= 0 or heat.sum() <= 0:
+        return 0, "an indeterminate part of the frame"
+
+    head = grey > 0.10 * grey.max()
+    off_head = int(round(100 * float(heat[~head].sum()) / float(heat.sum())))
+
+    row, column = np.unravel_index(int(np.argmax(heat)), heat.shape)
+    vertical = ("upper", "middle", "lower")[min(2, int(3 * row / heat.shape[0]))]
+    horizontal = ("left", "centre", "right")[min(2, int(3 * column / heat.shape[1]))]
+    return off_head, f"the {vertical} {horizontal} of the frame"
+
+
 def predict_mri(image_path: str | Path) -> CombinedResult:
     """Research-baseline MRI critique: real CNN prediction plus a Grad-CAM overlay.
 
@@ -242,10 +271,18 @@ def predict_mri(image_path: str | Path) -> CombinedResult:
         x = transform(Image.open(image_path).convert("RGB")).unsqueeze(0).to(DEVICE)
         probability = float(torch.softmax(model(x), 1)[0, 1])
 
-    text = ("This is a research baseline, not a validated detector. The brain-MRI model returns "
-            "a prediction and a Grad-CAM map of where it looked, but its accuracy was shown to be "
-            "a leakage and scanner-protocol artefact, so it must not guide care. The highlighted "
-            "regions often fall outside the brain, which is the point of the critique.")
+    # The explanation is deterministic rather than generated. The retrieved corpus behind
+    # the voice explanation carries referral guidance and nothing about imaging, so a
+    # language model asked to describe this map would have no supporting text to draw on,
+    # which is the failure the grounded design exists to prevent.
+    off_head, location = _gradcam_evidence(image, cam)
+    band = _band(probability)
+    text = (f"The network scored this slice at {_display_pct(probability)}%, in the {band} "
+            f"band. Measured on this image, {off_head}% of its attention falls outside "
+            f"the head outline, and the hottest point sits in {location}. "
+            "Attention landing away from brain tissue is what this mode exists to show: "
+            "the accuracy of this baseline was traced to acquisition protocol rather than "
+            "pathology. It is not a validated detector and must not guide care.")
     return CombinedResult(
         modality="mri", probability=round(probability, 3), risk_band=_band(probability),
         explanation=Explanation(features=[], plain_text=text, method="Grad-CAM"),
