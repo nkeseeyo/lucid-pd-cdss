@@ -138,19 +138,26 @@ baseline, so that the failure can be seen rather than described.
 ### The deployed voice model
 
 The model the application serves is trained on the Italian Parkinson's Voice and Speech
-corpus with eGeMAPS features, evaluated at subject level.
+corpus with eGeMAPS features, evaluated at subject level. Six speakers are excluded from
+training entirely: their recordings ship as the demonstration set, and a demonstration
+proves nothing if its clips were also training data, so every demo run is a prediction
+about a subject the model has never seen.
 
 | Metric | Value |
 | --- | --- |
-| Accuracy | 0.947 ± 0.045 |
-| Balanced accuracy | 0.948 |
-| Sensitivity | 0.954 |
-| Specificity | 0.941 |
-| ROC-AUC | 0.985 ± 0.020 |
-| MCC | 0.898 |
+| Accuracy | 0.959 ± 0.045 |
+| Balanced accuracy | 0.958 |
+| Sensitivity | 0.977 |
+| Specificity | 0.940 |
+| ROC-AUC | 0.992 ± 0.014 |
+| MCC | 0.920 |
 
-This figure is higher than the UCI #470 results above and should not be read as the better
-result. No recording from one person crosses a fold boundary, but the control and
+On the six held-out speakers, five fall on the correct side of 0.5 when their recordings
+are averaged, and one person with Parkinson's is borderline, which is what genuine
+prediction on unseen subjects looks like (`results/tables/ipvs_demo_holdout.csv`).
+
+These figures are higher than the UCI #470 results above and should not be read as the
+better result. No recording from one person crosses a fold boundary, but the control and
 Parkinson's recordings come from different cohorts whose age distribution and recording
 conditions plausibly separate them on their own. The validated findings of this project
 are the UCI #470 results; this model exists so that the demonstrator can accept live audio.
