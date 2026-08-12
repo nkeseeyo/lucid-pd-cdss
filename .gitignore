@@ -74,3 +74,6 @@ Thumbs.db
 /EXPERIMENT_DESIGN.md
 /scripts/fill_proforma.py
 /scripts/make_gantt.py
+
+# --- editor workspace settings (machine-local, not part of the project) ---
+.vscode/
