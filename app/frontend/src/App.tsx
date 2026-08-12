@@ -64,6 +64,16 @@ export default function App() {
 
   const backToInput = useCallback(() => setScreen("input"), []);
 
+  // "New screening" after a result starts clean: keeping the previous take forced a
+  // detour through Re-record for anyone wanting a second run. The error screen's Back
+  // still uses backToInput, which keeps the input so a failed request can be retried.
+  const newScreening = useCallback(() => {
+    setVoice(null);
+    setMri(null);
+    setResult(null);
+    setScreen("input");
+  }, []);
+
   const runPredict = useCallback(
     async (m: Mode, v: CapturedFile | null, i: CapturedFile | null) => {
       lastAnalyseMode.current = m;
@@ -154,7 +164,7 @@ export default function App() {
             result={result}
             mode={mode}
             mriURL={mri?.url ?? null}
-            onNewScreening={backToInput}
+            onNewScreening={newScreening}
           />
         )}
 

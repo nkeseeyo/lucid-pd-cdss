@@ -475,7 +475,8 @@ export default function InputScreen({
               </span>
             </div>
             <p style={{ fontSize: 14, color: "#5A6A68", margin: "6px 0 20px" }}>
-              Take a breath, then hold a steady &ldquo;aaah&rdquo; for about 5 seconds.
+              Take a breath, then hold a steady &ldquo;aaah&rdquo; for at least 5 seconds,
+              as long as is comfortable. Recording stops by itself at 20.
             </p>
 
             {inputState === "empty" && (
