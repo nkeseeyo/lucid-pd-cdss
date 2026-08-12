@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import type { CombinedResult, Mode, Screen } from "./types";
+import type { CombinedResult, Mode, PastTake, Screen } from "./types";
 import { predict } from "./api";
 import TopBanner from "./components/TopBanner";
 import Header from "./components/Header";
@@ -26,6 +26,9 @@ export default function App() {
   const [voice, setVoice] = useState<CapturedFile | null>(null);
   const [mri, setMri] = useState<CapturedFile | null>(null);
   const [result, setResult] = useState<CombinedResult | null>(null);
+  /** Voice takes analysed this session, newest first, so a clip can be re-run and
+   *  its result compared. In memory only; a page refresh clears it. */
+  const [pastTakes, setPastTakes] = useState<PastTake[]>([]);
   /** Incremented whenever we navigate away from input → tells InputScreen to
    *  tear down its mic / AudioContext / rAF. */
   const [teardownSignal, setTeardownSignal] = useState(0);
@@ -85,6 +88,22 @@ export default function App() {
           voice: v?.blob ?? null,
           image: i?.blob ?? null,
         });
+        if (m === "voice" && v) {
+          // remember the take with the result it produced; re-running it from the
+          // history shows whether the estimate is stable for the identical clip
+          const take: PastTake = {
+            ...v,
+            pct: Math.min(99, Math.max(1, Math.round(res.probability * 100))),
+            band: res.risk_band,
+            at: new Date().toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+          };
+          setPastTakes((prev) =>
+            [take, ...prev.filter((t) => t.url !== take.url)].slice(0, 5),
+          );
+        }
         const wait = Math.max(0, MIN_PROCESSING_MS - (Date.now() - start));
         window.setTimeout(() => {
           setResult(res);
@@ -150,6 +169,7 @@ export default function App() {
             onAnalyse={analyse}
             onHome={goHome}
             teardownSignal={teardownSignal}
+            pastTakes={pastTakes}
           />
         )}
 

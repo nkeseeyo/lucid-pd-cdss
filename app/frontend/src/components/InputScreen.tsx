@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import type { Mode } from "../types";
+import type { Mode, PastTake } from "../types";
 
 type InputState = "empty" | "recording" | "recorded";
 
@@ -26,9 +26,16 @@ interface Props {
   /** Bumped by the parent whenever we leave the input screen, so the recorder
    *  tears down its mic/AudioContext/rAF even mid-recording. */
   teardownSignal: number;
+  /** Takes already analysed this session, newest first, for re-running. */
+  pastTakes: PastTake[];
 }
 
 const MAX_BYTES = 25 * 1024 * 1024;
+
+/** The recorder stops itself here. A fixed short window keeps the clip fully voiced:
+ *  people rarely find the stop button in time, and every second between the vowel
+ *  ending and the stop press is silence that the acoustic features average over. */
+const RECORD_SECONDS = 5;
 
 export default function InputScreen({
   mode,
@@ -40,6 +47,7 @@ export default function InputScreen({
   onAnalyse,
   onHome,
   teardownSignal,
+  pastTakes,
 }: Props) {
   const [inputState, setInputState] = useState<InputState>(
     voice ? "recorded" : "empty",
@@ -168,7 +176,7 @@ export default function InputScreen({
       timerRef.current = window.setInterval(() => {
         const s = (Date.now() - t0Ref.current) / 1000;
         setRecordSeconds(s);
-        if (s >= 20) stopRecording();
+        if (s >= RECORD_SECONDS) stopRecording();
       }, 100);
       drawWave();
     } catch {
@@ -475,8 +483,8 @@ export default function InputScreen({
               </span>
             </div>
             <p style={{ fontSize: 14, color: "#5A6A68", margin: "6px 0 20px" }}>
-              Take a breath, then hold a steady &ldquo;aaah&rdquo; for at least 5 seconds,
-              as long as is comfortable. Recording stops by itself at 20.
+              Start the &ldquo;aaah&rdquo; the moment recording begins and hold it steady.
+              Recording stops by itself after {RECORD_SECONDS} seconds.
             </p>
 
             {inputState === "empty" && (
@@ -653,7 +661,7 @@ export default function InputScreen({
                       color: "#15302E",
                     }}
                   >
-                    {recordSeconds.toFixed(1)}s
+                    {recordSeconds.toFixed(1)} / {RECORD_SECONDS}s
                   </span>
                 </div>
                 <canvas
@@ -775,6 +783,96 @@ export default function InputScreen({
                 </button>
               </div>
             )}
+          </div>
+        )}
+
+        {/* earlier takes from this session, so a clip can be re-run and compared */}
+        {showVoiceInput && pastTakes.length > 0 && (
+          <div
+            style={{
+              background: "#fff",
+              border: "1px solid #EAE3D5",
+              borderRadius: 16,
+              boxShadow: "0 1px 2px rgba(20,40,40,.04)",
+              padding: "20px 26px 22px",
+            }}
+          >
+            <h2 style={{ fontSize: 15, fontWeight: 700, margin: "0 0 2px" }}>
+              Earlier takes this session
+            </h2>
+            <p style={{ fontSize: 13, color: "#5A6A68", margin: "0 0 14px" }}>
+              Load one to run it again and check the result is consistent. Takes stay in
+              this browser tab only and are gone when it closes.
+            </p>
+            <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
+              {pastTakes.map((take) => (
+                <li
+                  key={take.url}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    padding: "9px 0",
+                    borderTop: "1px solid #F0EBE0",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: "'IBM Plex Mono',monospace",
+                      fontSize: 12.5,
+                      color: "#5A6A68",
+                      flex: "none",
+                    }}
+                  >
+                    {take.at}
+                  </span>
+                  <audio
+                    controls
+                    src={take.url}
+                    style={{ flex: 1, minWidth: 0, height: 30 }}
+                  />
+                  <span
+                    style={{
+                      fontSize: 13,
+                      fontWeight: 700,
+                      color:
+                        take.band === "low"
+                          ? "#0A6E5C"
+                          : take.band === "moderate"
+                            ? "#9A5B00"
+                            : "#A6361A",
+                      flex: "none",
+                      minWidth: 86,
+                      textAlign: "right",
+                    }}
+                  >
+                    {take.pct}% {take.band}
+                  </span>
+                  <button
+                    data-nv-focusring
+                    onClick={() => {
+                      cleanupMic();
+                      onVoice({ url: take.url, name: take.name, blob: take.blob });
+                      setInputState("recorded");
+                      setError(null);
+                    }}
+                    style={{
+                      background: "#fff",
+                      border: "1.5px solid #CADEDB",
+                      borderRadius: 9,
+                      height: 34,
+                      padding: "0 12px",
+                      font: "600 13px 'IBM Plex Sans'",
+                      color: "#0C5C5E",
+                      cursor: "pointer",
+                      flex: "none",
+                    }}
+                  >
+                    Run again
+                  </button>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
 

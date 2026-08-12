@@ -22,6 +22,17 @@ export interface Recommendation {
   disclaimer: string;
 }
 
+/** A voice take already analysed this session, kept in memory only so it can be
+ *  re-run and its result compared. Nothing is stored beyond the page. */
+export interface PastTake {
+  url: string;
+  name: string;
+  blob: Blob;
+  pct: number; // whole percentage the interface showed for it
+  band: RiskBand;
+  at: string; // wall-clock label, e.g. "14:32"
+}
+
 export interface CombinedResult {
   modality: string;
   probability: number; // 0..1
