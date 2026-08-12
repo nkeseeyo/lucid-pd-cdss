@@ -37,6 +37,19 @@ from pdcdss.explain.slm_explain import (
 
 _LOG = logging.getLogger(__name__)
 
+#: Deployment-only additions to the evaluated system prompt. The research module's prompt
+#: is left untouched because the RQ3 results were measured under it; these lines address
+#: two drifts observed in served output. The model paraphrased the neutral family name
+#: "loudness (lowering the estimate)" as "reduced loudness lowers it", which reads as if a
+#: known Parkinson's sign lowered the risk. And it emits em dashes, which the interface
+#: style forbids.
+_DEPLOYED_PROMPT_ADDENDUM = (
+    "\nName each voice feature exactly as supplied in the evidence. Do not add qualifiers "
+    "such as 'reduced', 'increased', 'poor' or 'improved' to a feature name: the evidence "
+    "states which direction a feature moved the estimate, not how the voice sounded. Do "
+    "not use em dashes."
+)
+
 HF_ROUTER_URL = "https://router.huggingface.co/v1/chat/completions"
 #: Instruct build of the RQ3 winner (Qwen3-4B), served by Hugging Face Inference Providers.
 HF_MODEL_DEFAULT = "Qwen/Qwen3-4B-Instruct-2507"
@@ -76,7 +89,7 @@ def _via_inference_providers(prediction: str, risk_band: str,
     payload = {
         "model": os.environ.get("SLM_MODEL", HF_MODEL_DEFAULT),
         "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT_GROUNDED},
+            {"role": "system", "content": SYSTEM_PROMPT_GROUNDED + _DEPLOYED_PROMPT_ADDENDUM},
             {"role": "user", "content": _grounded_prompt(prediction, risk_band,
                                                          top_features)},
         ],
@@ -140,6 +153,18 @@ def _grounded_summary(prediction: str, risk_band: str, top_features: list[str]) 
             f"result. Relevant guidance: {guidance}")
 
 
+def _tidy(text: str) -> str:
+    """Replace generated em and en dashes with commas.
+
+    The prompt asks the model not to emit them, but a probabilistic instruction is not a
+    guarantee; this is. Spaced dashes become a comma and a space, unspaced ones a comma,
+    which reads naturally in the clause-break positions the model uses them for.
+    """
+    for dash in ("—", "–"):
+        text = text.replace(f" {dash} ", ", ").replace(dash, ", ")
+    return text.replace(" ,", ",").replace(",,", ",")
+
+
 def explanation(prediction: str, risk_band: str, top_features: list[str]) -> str:
     """Plain-language, grounded explanation of one prediction."""
     name = os.environ.get("SLM_BACKEND", "ollama").strip().lower()
@@ -147,5 +172,5 @@ def explanation(prediction: str, risk_band: str, top_features: list[str]) -> str
     if backend is None:
         raise ValueError(f"unknown SLM_BACKEND {name!r}; expected one of "
                          f"{', '.join(sorted(_BACKENDS))}")
-    return backend(prediction, risk_band, top_features) or _grounded_summary(
-        prediction, risk_band, top_features)
+    return _tidy(backend(prediction, risk_band, top_features) or _grounded_summary(
+        prediction, risk_band, top_features))
