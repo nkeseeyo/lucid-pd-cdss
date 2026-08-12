@@ -145,7 +145,11 @@ def _shap_evidence(pipeline, features: list[str],
         raises = values[index] > 0
         bars.append(Feature(name=family, weight=round(abs(values[index]) / largest, 3),
                             dir="up" if raises else "down"))
-        phrases.append(f"{family} ({'raising' if raises else 'lowering'} the estimate)")
+        # a complete clause the language model can reuse verbatim; the earlier bracketed
+        # form ("loudness (lowering the estimate)") invited paraphrase, and the model
+        # kept adding qualifiers like "reduced" to the family name while rewording it
+        phrases.append(f"the {family} features {'raised' if raises else 'lowered'} "
+                       "the estimate")
         if len(bars) == _TOP_FEATURES:
             break
     return bars, phrases

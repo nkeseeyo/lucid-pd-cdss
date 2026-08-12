@@ -44,10 +44,12 @@ _LOG = logging.getLogger(__name__)
 #: known Parkinson's sign lowered the risk. And it emits em dashes, which the interface
 #: style forbids.
 _DEPLOYED_PROMPT_ADDENDUM = (
-    "\nName each voice feature exactly as supplied in the evidence. Do not add qualifiers "
-    "such as 'reduced', 'increased', 'poor' or 'improved' to a feature name: the evidence "
-    "states which direction a feature moved the estimate, not how the voice sounded. Do "
-    "not use em dashes."
+    "\nEach evidence item is a complete clause, for example 'the loudness features "
+    "lowered the estimate'. When you mention the evidence, copy these clauses word for "
+    "word; join them with 'while' or 'and' if needed. Never attach words such as "
+    "'reduced', 'increased', 'poor' or 'improved' to a feature name: the evidence states "
+    "which direction a feature moved the estimate, not how the voice sounded. Do not use "
+    "em dashes."
 )
 
 HF_ROUTER_URL = "https://router.huggingface.co/v1/chat/completions"
@@ -145,8 +147,7 @@ def _grounded_summary(prediction: str, risk_band: str, top_features: list[str]) 
     guideline text verbatim and repeats the decision-support notice, so a response produced
     without a generated paragraph is still faithful and still grounded.
     """
-    drivers = f" The estimate was driven mainly by {', '.join(top_features)}." \
-        if top_features else ""
+    drivers = f" In this result, {'; '.join(top_features)}." if top_features else ""
     guidance = retrieved_block(f"{prediction} {risk_band}", k=1).lstrip("- ").strip()
     return (f"{prediction}, which falls in the {risk_band} risk band.{drivers} "
             "This is decision support, not a diagnosis, and a specialist should review the "
