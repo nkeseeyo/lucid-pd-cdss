@@ -34,7 +34,11 @@ kaggle.json
 /results/figures/*
 !results/figures/.gitkeep
 
-# --- LaTeX build artefacts (keep .tex/.bib/.pdf) ---
+# --- LaTeX: sources and build artefacts alike stay out of the published repository ---
+# The dissertation lives under /doc/ (ignored below); these rules stop a stray .tex,
+# .bib or build file committed from anywhere else in the tree.
+*.tex
+*.bib
 *.aux
 *.log
 *.out
@@ -48,6 +52,8 @@ kaggle.json
 *.blg
 *.bbl
 *.synctex.gz
+*.pdf
+*.docx
 
 # --- frontend (React/Vite) ---
 app/frontend/node_modules/
