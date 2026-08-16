@@ -9,6 +9,13 @@ description = "Web-based Clinical Decision Support System for Parkinson's Diseas
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [{ name = "Nkese Eyo" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 
 # core: speech pipeline + explainability + API (laptop, no GPU)
 dependencies = [

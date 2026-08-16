@@ -34,6 +34,7 @@ LAYOUT: tuple[tuple[Path, str], ...] = (
     (SPACE_SOURCE / "README.md", "README.md"),
     (SPACE_SOURCE / "requirements.txt", "requirements.txt"),
     (SPACE_SOURCE / ".dockerignore", ".dockerignore"),
+    (PROJECT_ROOT / "LICENSE", "LICENSE"),
     (PROJECT_ROOT / "src" / "pdcdss", "src/pdcdss"),
     (PROJECT_ROOT / "app" / "backend", "app/backend"),
     (PROJECT_ROOT / "app" / "frontend" / "src", "frontend/src"),

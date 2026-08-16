@@ -6,6 +6,7 @@ colorTo: purple
 sdk: docker
 app_port: 7860
 pinned: false
+license: mit
 short_description: Voice-based Parkinson's decision support with SHAP evidence
 ---
 
